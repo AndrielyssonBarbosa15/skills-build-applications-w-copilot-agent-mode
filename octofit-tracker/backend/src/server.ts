@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { connectDB } from './config/database';
 import usersRouter from './routes/users';
 import teamsRouter from './routes/teams';
@@ -15,8 +16,16 @@ const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : `http://localhost:${PORT}`;
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 app.use(cors());
 app.use(express.json());
+app.use('/api/', apiLimiter);
 
 app.use('/api/users', usersRouter);
 app.use('/api/teams', teamsRouter);
