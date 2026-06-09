@@ -1,10 +1,12 @@
 name: Step 2 # octofit-tracker application initial setup
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "build-octofit-app"
     paths:
+      - ".github/workflows/2-application-initial-setup.yml"
       - "octofit-tracker/frontend/package.json"
       - "octofit-tracker/backend/package.json"
 
